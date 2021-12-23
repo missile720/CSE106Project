@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>finalstat</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "row1">
+            <div class = "welcome">
+            {% if current_user.is_authenticated %}
+                {{ current_user.username }}
+            {% endif %}
+            </div>
+            <div class = "back">
+                <form action = "http://127.0.0.1:5000/characterstatcalc" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Back</button>
+                    </div>
+                </form>
+            </div>
+            <div class = "signOut">
+                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Character Name</th>
+                        <th>Weapon Name</th>
+                        <th>Max HP</th>
+                        <th>ATK</th>
+                        <th>DEF</th>
+                        <th>Elemental Mastery</th>
+                        <th>CRIT Rate</th>
+                        <th>CRIT DMG</th>
+                        <th>Energy Recharge</th>
+                        <th>Pyro DMG Bonus</th>
+                        <th>Hydro DMG Bonus</th>
+                        <th>Anemo DMG Bonus</th>
+                        <th>Electro DMG Bonus</th>
+                        <th>Cryo DMG Bonus</th>
+                        <th>Geo DMG Bonus</th>
+                        <th>Physical DMG Bonus</th>
+                    </tr>    
+                    <tr>
+                        <td>{{c}}</td>
+                        <td>{{w}}</td>
+                        <td>{{hp}}</td>
+                        <td>{{atk}}</td>
+                        <td>{{deff}}</td>
+                        <td>{{em}}</td>
+                        <td>{{cr}}</td>
+                        <td>{{cd}}</td>
+                        <td>{{er}}</td>
+                        <td>{{Pyro}}</td>
+                        <td>{{Hydro}}</td>
+                        <td>{{Anemo}}</td>
+                        <td>{{Electro}}</td>
+                        <td>{{Cryo}}</td>
+                        <td>{{Geo}}</td>
+                        <td>{{Physical}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br><br>
+            <img src="/static/pictures/characters/{{c}}.jpg"/>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>User Page</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "row1">
+            <div class = "welcome">
+            {% if current_user.is_authenticated %}
+                {{ current_user.username }} look at all the teams!
+            {% endif %}
+            </div>
+            <div class = "home">
+                <form action = "http://127.0.0.1:5000/user" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Home</button>
+                    </div>
+                </form>
+            </div>
+            <div class = "signOut">
+                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <h3>Players' Shared Team View</h3>
+        <div class = "middle">
+        {% for row in results %}
+            <table>
+                <thead>
+                    <td colspan="4">{{row[0]}}'s Team:</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{row[1]}}</td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td>	
+                    </tr>
+                    <tr>
+                        <td><img src="/static/pictures/characters/{{row[1]}}.jpg"/></td>
+                        <td><img src="/static/pictures/characters/{{row[2]}}.jpg"/></td>
+                        <td><img src="/static/pictures/characters/{{row[3]}}.jpg"/></td>
+                        <td><img src="/static/pictures/characters/{{row[4]}}.jpg"/></td>	
+                    </tr>
+                </tbody>
+            </table>
+            <br><br>
+        {% endfor %}
+        </div>
+    </body>
+</html>

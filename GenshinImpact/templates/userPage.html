@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>User Page</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "row1">
+            <div class = "welcome">
+            {% if current_user.is_authenticated %}
+                Welcome {{ current_user.username }}!
+            {% endif %}
+            </div>
+            <div class = "signOut">
+                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class = "center">
+            <h2>Navigate:</h2>
+            <form action = "http://127.0.0.1:5000/playerteams" method = "get">
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">View Players' Shared Teams</button>
+                </div>
+            </form>
+            <br><br>
+            <form action = "http://127.0.0.1:5000/teammanage" method = "get">
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">Manage Team</button>
+                </div>
+            </form>
+            <br><br>
+            <form action = "http://127.0.0.1:5000/characterstatcalc" method = "get">
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">Character Stat Calculator</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

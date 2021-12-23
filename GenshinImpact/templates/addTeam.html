@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>User Page</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "row1">
+            <div class = "welcome">
+                {% if current_user.is_authenticated %}
+                    {{ current_user.username }}
+                {% endif %}
+            </div>
+            <div class = "back">
+                <form action = "http://127.0.0.1:5000/teammanage" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Back</button>
+                    </div>
+                </form>
+            </div>
+            <div class = "signOut">
+                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <h3>Players' Team Add View</h3>
+        <div class = "row2">
+            <form action= "http://127.0.0.1:5000/add" method = "post">
+                <select name= 'character1'>
+                    {% for row in list1 %}
+                    <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                    {% endfor %}
+                </select>
+                <select name= 'character2'>
+                    {% for row in list2 %}
+                    <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                    {% endfor %}
+                </select>
+                <select name= 'character3'>
+                    {% for row in list3 %}
+                    <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                    {% endfor %}
+                </select>
+                <select name= 'character4'>
+                    {% for row in list4 %}
+                    <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                    {% endfor %}
+                </select>
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">Submit</button>
+                </div>
+            </form> 
+        </div>
+    </body>
+</html>

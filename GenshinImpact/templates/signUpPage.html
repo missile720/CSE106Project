@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>Sign Up Page</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "center">
+            <h2>Sign Up Info:</h2>
+            <form action= "http://127.0.0.1:5000/register" method = "post">
+                <label for="email">Email: </label>
+                <input type="text" name="Email" />
+                <br><br>
+                <label for="password"> Password: </label>
+                <input type="password" name="Password" />
+                <br><br>
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">Sign Up</button>
+                </div>
+            </form>
+            <br><br>
+            <form action = "http://127.0.0.1:5000/login" method = "get">
+                <div class = "buttonBox">
+                    <button type="submit" class = "all_Buttons" value = "Submit">Login Page</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

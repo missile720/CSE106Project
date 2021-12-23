@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <title>User Page</title>
+    </head>
+    <body>
+        <h1>Genshin Impact Team Builder</h1>
+        <div class = "row1">
+            <div class = "welcome">
+            {% if current_user.is_authenticated %}
+                {{ current_user.username }} who stats you be looking at
+            {% endif %}
+            </div>
+            <div class = "home">
+                <form action = "http://127.0.0.1:5000/user" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Home</button>
+                    </div>
+                </form>
+            </div>
+            <div class = "signOut">
+                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                    <div class = "buttonBox">
+                        <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class = "middle">
+            <h3>Character Stat. Calculator</h3>
+        </div>
+        
+        <form action= "http://127.0.0.1:5000/finalstat" method = "post">
+            <select name= 'character'>
+                {% for row in list1 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'weapon'>
+                {% for row in list2 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'flower'>
+                {% for row in list3 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[1] }}, Id: {{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'plume'>
+                {% for row in list4 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[1] }}, Id: {{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'sand'>
+                {% for row in list5 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[1] }}, Id: {{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'goblet'>
+                {% for row in list6 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[1] }}, Id: {{ row[0] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name= 'circlet'>
+                {% for row in list7 %}
+                <option value= '{{ row[0] }}' selected= "selected">{{ row[1] }}, Id: {{ row[0] }}</option>
+                {% endfor %}
+            </select>
+            <div class = "buttonBox">
+                <button type="submit" class = "all_Buttons" value = "Submit">Submit</button>
+            </div>
+        </form>    
+        <div class = "middle">
+            
+            <table>
+                <thead>
+                    <th>artifactId</th>
+                    <th>artifactName</th>
+                    <th>artifactSlot</th>
+                    <th>artifactHPPercent</th>
+                    <th>artifactHP</th>
+                    <th>artifactAttackPercent</th>
+                    <th>artifactAttack</th>
+                    <th>artifactDefensePercent</th>
+                    <th>artifactDefense</th>
+                    <th>artifactElementalMastery</th>
+                    <th>artifactCriticalRatePercent</th>
+                    <th>artifactCriticalDamagePercent</th>
+                    <th>artifactEnergyRecharge</th>
+                    <th>artifactDamageBonus</th>
+                </thead>
+                {% for row in list8 %}
+                <tbody>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                    <td>{{row[6]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td>{{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                    <td>{{row[10]}}</td>
+                    <td>{{row[11]}}</td>
+                    <td>{{row[12]}}</td>
+                    <td>{{row[13]}}</td>
+                </tbody>
+                {% endfor %}
+            </table>
+            
+        </div>
+
+    </body>
+</html>
