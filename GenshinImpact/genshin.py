@@ -8,7 +8,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from sqlalchemy.orm import backref, query
 
 app = Flask(__name__)
-conn = sqlite3.connect('genshindata.sqlite',check_same_thread=False)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///genshindata.sqlite"
 app.config['SECRET_KEY'] = "thisissecret"
@@ -246,9 +245,7 @@ def playerteams():
           and shared = 1
           ;"""
 
-   cursor = conn.cursor()
-   cursor.execute(query)
-   lists = cursor.fetchall()
+   lists = db.session.execute(query).fetchall()
    return render_template('teamListPage.html',results = lists)
 
 @app.route('/teammanage')
@@ -267,9 +264,7 @@ def teampage():
           and teamMember4 = character4.characterId
           ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query)
-    lists = cursor.fetchall()
+    lists = db.session.execute(query).fetchall()
     return render_template('addTeamPage.html',results = lists)
 
 @app.route('/characterstatcalc', methods = ['GET'])
@@ -305,30 +300,22 @@ def charcatercalc():
     query8 = """SELECT artifactId, artifactName,artifactSlot, artifactHPPercent, artifactHP, artifactAttackPercent, artifactAttack, artifactDefensePercent, artifactDefense, artifactElementalMastery, artifactCriticalRatePercent, artifactCriticalDamagePercent, artifactEnergyRecharge, artifactDamageBonus
             FROM artifact
             ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list1 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query2)
-    list2 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query3)
-    list3 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query4)
-    list4 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query5)
-    list5 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query6)
-    list6 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query7)
-    list7 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query8)
-    list8 = cursor.fetchall()
+
+    list1 = db.session.execute(query).fetchall()
+    
+    list2 = db.session.execute(query2).fetchall()
+    
+    list3 = db.session.execute(query3).fetchall()
+
+    list4 = db.session.execute(query4).fetchall()
+
+    list5 = db.session.execute(query5).fetchall()
+
+    list6 = db.session.execute(query6).fetchall()
+
+    list7 = db.session.execute(query7).fetchall()
+
+    list8 = db.session.execute(query8).fetchall()
 
     # ch = request.form['Email']
     return render_template('CStatCalc.html', list1 = list1,list2 = list2,list3 = list3,list4 = list4,list5 = list5,list6 = list6,list7= list7,list8=list8)
@@ -355,10 +342,9 @@ def showfinal():
     #get w_id from weapon user choose 
     weap = w
     # empty temp
-    cursor = conn.cursor()
+
     cmd="""Delete from tempartifact;"""
-    cursor.execute(cmd)
-    cursor = conn.cursor()
+    db.session.execute(cmd).fetchall()
     # insert selected artifact to temptable 
     cmd0 = f"""
     INSERT INTO tempartifact(artifactId,artifactName,artifactSlot,artifactHPPercent,artifactHP,artifactAttackPercent,artifactAttack,artifactDefensePercent,artifactDefense,artifactElementalMastery,artifactCriticalRatePercent,artifactCriticalDamagePercent,artifactEnergyRecharge,artifactDamageBonus)
@@ -366,39 +352,39 @@ def showfinal():
     from artifact
     where artifactId = {selected1} or artifactId = {selected2} or artifactId = {selected3} or artifactId = {selected4} or artifactId = {selected5} ;
     """
-    cursor.execute(cmd0)
-    cursor = conn.cursor()
+    db.session.execute(cmd0).fetchall()
+    
     # calculate the artifact 
     cmd1 = """
     select sum(artifactHPPercent),sum(artifactHP),sum(artifactAttackPercent),sum(artifactAttack),sum(artifactDefensePercent),sum(artifactDefense),sum(artifactElementalMastery),sum(artifactCriticalRatePercent),sum(artifactCriticalDamagePercent),sum(artifactEnergyRecharge)
     from tempartifact;
     """ 
-    cursor.execute(cmd1)
-    resultsA = cursor.fetchall()
-    cursor = conn.cursor()
+
+    resultsA = db.session.execute(cmd1).fetchall()
+  
     # get chara 
     cmd2 = f"""
     select * from character
     where characterName = "{chara}";
     """
-    cursor.execute(cmd2)
-    resultsC = cursor.fetchall()
-    cursor = conn.cursor()
+    
+    resultsC = db.session.execute(cmd2).fetchall()
+    
     # get Weapon
     cmd3 = f"""
     select * from weapon
     where weaponName = "{weap}";
     """
-    cursor.execute(cmd3)
-    resultsW = cursor.fetchall()
+    
+    resultsW = db.session.execute(cmd3).fetchall()
     
     # get damagebonus from artifact 
     cmd4 = f"""
     select artifactDamageBonus from tempartifact
     where artifactDamageBonus != 'NULL';
     """
-    cursor.execute(cmd4)
-    resultsADB = cursor.fetchall()
+    
+    resultsADB = db.session.execute(cmd4).fetchall()
     for resultADB in resultsADB:
         adb = resultADB[0]
 
@@ -505,7 +491,7 @@ def showfinal():
     ser = ser + cer
 
     #time for weapon to sum 
-    if wpsecond is not 'None':
+    if wpsecond != 'None':
         if wpsecond == 'atk':
             satkp = satkp+wpvalue
         if wpsecond == 'hp':
@@ -570,18 +556,14 @@ def addTeam():
     query = """SELECT characterName
             FROM character
             ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list1 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list2 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list3 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list4 = cursor.fetchall()
+    
+    list1 = db.session.execute(query).fetchall()
+    
+    list2 = db.session.execute(query).fetchall()
+    
+    list3 = db.session.execute(query).fetchall()
+    
+    list4 = db.session.execute(query).fetchall()
 
     return render_template('addTeam.html', list1 = list1, list2 = list2, list3 = list3,list4 = list4)
 
@@ -600,9 +582,8 @@ def removeteam():
           and teamMember3 = character3.characterId
           and teamMember4 = character4.characterId
           ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list = cursor.fetchall()
+    
+    list = db.session.execute(query).fetchall()
 
     return render_template('deleteTeam.html', list1 = list)
 
@@ -632,18 +613,13 @@ def add():
             where characterName = "{c4}"
             ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query1)
-    list1 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query2)
-    list2 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query3)
-    list3 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query4)
-    list4 = cursor.fetchall()
+    list1 = db.session.execute(query1).fetchall()
+    
+    list2 = db.session.execute(query2).fetchall()
+    
+    list3 = db.session.execute(query3).fetchall()
+    
+    list4 = db.session.execute(query4).fetchall()
 
     for row in list1:
         chara1 = row[0]
@@ -678,9 +654,7 @@ def add():
           and teamMember4 = character4.characterId
           ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query)
-    lists = cursor.fetchall()
+    lists = db.session.execute(query).fetchall()
 
     return render_template('addTeamPage.html', results = lists)
 
@@ -706,9 +680,7 @@ def delete():
           and teamMember4 = character4.characterId
           ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query)
-    lists = cursor.fetchall()
+    lists = db.session.execute(query).fetchall()
     return render_template('addTeamPage.html', results = lists)
 
 @app.route('/share', methods = ['POST'])
@@ -736,9 +708,7 @@ def share():
           and teamMember4 = character4.characterId
           ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query)
-    lists = cursor.fetchall()
+    lists = db.session.execute(query).fetchall()
     return render_template('addTeamPage.html', results = lists)
 
 @app.route('/shareteam')
@@ -756,9 +726,8 @@ def shareteam():
           and teamMember3 = character3.characterId
           and teamMember4 = character4.characterId
           ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list = cursor.fetchall()
+
+    list = db.session.execute(query).fetchall()
 
     return render_template('shareTeam.html', list1 = list)
 
@@ -777,25 +746,20 @@ def editteam():
           and teamMember3 = character3.characterId
           and teamMember4 = character4.characterId
           ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list = cursor.fetchall()
+
+    list = db.session.execute(query).fetchall()
 
     query = """SELECT characterName
             FROM character
             ;"""
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list1 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list2 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list3 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query)
-    list4 = cursor.fetchall()
+
+    list1 = db.session.execute(query).fetchall()
+
+    list2 = db.session.execute(query).fetchall()
+
+    list3 = db.session.execute(query).fetchall()
+
+    list4 = db.session.execute(query).fetchall()
     return render_template('editTeam.html', list1 = list, list2 = list1, list3 = list2, list4 = list3, list5 = list4)
 
 @app.route('/edit', methods = ['POST'])
@@ -825,18 +789,14 @@ def edit():
             where characterName = "{c4}"
             ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query1)
-    list1 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query2)
-    list2 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query3)
-    list3 = cursor.fetchall()
-    cursor = conn.cursor()
-    cursor.execute(query4)
-    list4 = cursor.fetchall()
+
+    list1 = db.session.execute(query1).fetchall()
+
+    list2 = db.session.execute(query2).fetchall()
+
+    list3 = db.session.execute(query3).fetchall()
+
+    list4 = db.session.execute(query4).fetchall()
 
     for row in list1:
         chara1 = row[0]
@@ -873,9 +833,7 @@ def edit():
           and teamMember4 = character4.characterId
           ;"""
 
-    cursor = conn.cursor()
-    cursor.execute(query)
-    lists = cursor.fetchall()
+    lists = db.session.execute(query).fetchall()
 
     return render_template('addTeamPage.html', results = lists)
 

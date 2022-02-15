@@ -13,14 +13,14 @@
             {% endif %}
             </div>
             <div class = "home">
-                <form action = "http://127.0.0.1:5000/user" method = "get">
+                <form action = "/user" method = "get">
                     <div class = "buttonBox">
                         <button type="submit" class = "all_Buttons" value = "Submit">Home</button>
                     </div>
                 </form>
             </div>
             <div class = "signOut">
-                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                <form action = "/logout" method = "get">
                     <div class = "buttonBox">
                         <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
                     </div>
@@ -31,7 +31,7 @@
             <h3>Character Stat. Calculator</h3>
         </div>
         
-        <form action= "http://127.0.0.1:5000/finalstat" method = "post">
+        <form action= "/finalstat" method = "post">
             <select name= 'character'>
                 {% for row in list1 %}
                 <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}</option>

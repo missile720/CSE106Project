@@ -13,14 +13,14 @@
                 {% endif %}
             </div>
             <div class = "back">
-                <form action = "http://127.0.0.1:5000/teammanage" method = "get">
+                <form action = "/teammanage" method = "get">
                     <div class = "buttonBox">
                         <button type="submit" class = "all_Buttons" value = "Submit">Back</button>
                     </div>
                 </form>
             </div>
             <div class = "signOut">
-                <form action = "http://127.0.0.1:5000/logout" method = "get">
+                <form action = "/logout" method = "get">
                     <div class = "buttonBox">
                         <button type="submit" class = "all_Buttons" value = "Submit">Sign Out</button>
                     </div>
@@ -29,7 +29,7 @@
         </div>
         <h3>Players' Team Edit View</h3>
         <div class = "row2">
-            <form action= "http://127.0.0.1:5000/edit" method = "post">
+            <form action= "/edit" method = "post">
                 <select name= 'team'>
                     {% for row in list1 %}
                     <option value= '{{ row[0] }}' selected= "selected">{{ row[0] }}, {{ row[1] }}, {{ row[2] }}, {{ row[3] }}, {{ row[4] }}</option>
